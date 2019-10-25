@@ -1,0 +1,28 @@
+Link de referencia
+
+https://www.ostechnix.com/terminal-velocity-command-line-note-taking-application-linux/
+
+Lik github
+https://github.com/seanh/terminal_velocity
+
+Link Pynton site
+https://pypi.org/project/terminal_velocity/
+1-
+sudo apt-get install python-pip
+
+2-
+pip install terminal_velocity
+
+source .profile (pesquisar o porque)
+
+apontar para diretorio de notas
+
+terminal_velocity /caminhodapasta/notas
+
+criar alias com o caminho para diretorio de notas
+
+pip install --upgrade terminal_velocity
+
+pip uninstall terminal_velocity
+
+

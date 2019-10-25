@@ -1,0 +1,309 @@
+#
+#
+# ============ BASHRC Otimizado para o uso do ROOt
+# ~/.bashrc: executed by bash(1) for non-login shells.
+# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
+# for examples
+# --------------
+# If not running interactively, don't do anything
+case $- in
+   *i*) ;;
+     *) return;;
+esac
+
+export PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/usr/share/games:/usr/local/sbin:/usr/sbin:/sbin:~/local/bin
+
+# don't put duplicate lines or lines starting with space in the history.
+# See bash(1) for more options
+HISTCONTROL=ignoreboth
+
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=10000
+HISTFILESIZE=20000
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+
+# If set, the pattern "**" used in a pathname expansion context will
+# match all files and zero or more directories and subdirectories.
+#shopt -s globstar
+
+# make less more friendly for non-text input files, see lesspipe(1)
+#[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
+   debian_chroot=$(cat /etc/debian_chroot)
+fi
+
+# set a fancy prompt (non-color, unless we know we "want" color)
+case "$TERM" in
+   xterm-color) color_prompt=yes;;
+esac
+
+# uncomment for a colored prompt, if the terminal has the capability; turned
+# off by default to not distract the user: the focus in a terminal window
+# should be on the output of commands, not on the prompt
+force_color_prompt=yes
+
+if [ -n "$force_color_prompt" ]; then
+   if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+	# We have color support; assume it's compliant with Ecma-48
+	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+	# a case would tend to support setf rather than setaf.)
+	color_prompt=yes
+   else
+	color_prompt=
+   fi
+fi
+
+if [ "$color_prompt" = yes ]; then
+   PS1="\[\033[0;31m\]\342\224\214\342\224\200\$([[ \$? != 0 ]] && echo \"[\[\033[0;31m\]\342\234\227\[\033[0;37m\]]\342\224\200\")[$(if [[ ${EUID} == 0 ]]; then echo '\[\033[01;31m\]root\[\033[01;33m\]@\[\033[01;96m\]\h'; else echo '\[\033[0;39m\]\u\[\033[01;33m\]@\[\033[01;96m\]\h'; fi)\[\033[0;31m\]]\342\224\200[\[\033[0;32m\]\w\[\033[0;31m\]]\n\[\033[0;31m\]\342\224\224\342\224\200\342\224\200\342\225\274 \[\033[0m\]\[\e[01;33m\]\\$\[\e[0m\]"
+else
+   PS1='┌──[\u@\h]─[\w]\n└──╼ \$ '
+fi
+
+# Set 'man' colors
+if [ "$color_prompt" = yes ]; then
+	man() {
+	env \
+	LESS_TERMCAP_mb=$'\e[01;31m' \
+	LESS_TERMCAP_md=$'\e[01;31m' \
+	LESS_TERMCAP_me=$'\e[0m' \
+	LESS_TERMCAP_se=$'\e[0m' \
+	LESS_TERMCAP_so=$'\e[01;44;33m' \
+	LESS_TERMCAP_ue=$'\e[0m' \
+	LESS_TERMCAP_us=$'\e[01;32m' \
+	man "$@"
+	}
+fi
+
+unset color_prompt force_color_prompt
+
+# If this is an xterm set the title to user@host:dir
+case "$TERM" in
+xterm*|rxvt*)
+   PS1="\[\033[0;31m\]\342\224\214\342\224\200\$([[ \$? != 0 ]] && echo \"[\[\033[0;31m\]\342\234\227\[\033[0;37m\]]\342\224\200\")[$(if [[ ${EUID} == 0 ]]; then echo '\[\033[01;31m\]root\[\033[01;33m\]@\[\033[01;96m\]\h'; else echo '\[\033[0;39m\]\u\[\033[01;33m\]@\[\033[01;96m\]\h'; fi)\[\033[0;31m\]]\342\224\200[\[\033[0;32m\]\w\[\033[0;31m\]]\n\[\033[0;31m\]\342\224\224\342\224\200\342\224\200\342\225\274 \[\033[0m\]\[\e[01;33m\]\\$\[\e[0m\]"
+   ;;
+*)
+   ;;
+esac
+
+# Powerline-shell
+
+#function _update_ps1() {
+#    PS1=$(powerline-shell $?)
+#}
+
+#if [[ $TERM != linux && ! $PROMPT_COMMAND =~ _update_ps1 ]]; then
+#    PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
+#fi
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+   test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+   alias ls='ls --color=auto'
+   alias dir='dir --color=auto'
+   alias vdir='vdir --color=auto'
+   alias grep='grep --color=auto'
+   alias fgrep='fgrep --color=auto'
+   alias egrep='egrep --color=auto'
+fi
+
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+# some more ls aliases
+alias ll='ls -l'
+alias la='ls -A'
+alias l='ls -CF'
+alias em='emacs -nw'
+alias dd='dd status=progress'
+alias _='sudo'
+
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+if ! shopt -oq posix; then
+ if [ -f /usr/share/bash-completion/bash_completion ]; then
+   . /usr/share/bash-completion/bash_completion
+ elif [ -f /etc/bash_completion ]; then
+   . /etc/bash_completion
+ fi
+fi
+
+# check if local bin folder exist
+# $HOME/bin
+# prepend it to $PATH if so
+if [ -d $HOME/bin ]; then
+   export PATH=$HOME/bin:$PATH
+fi
+## Verifica se é usuario root (UUID=0) ou usuario comun
+if [ $UID -eq "0" ]; then
+## Cores e efeitos do Usuario root
+
+PS1="$G┌─[$BR\u$G]$BY@$G[$BW${HOSTNAME%%.*}$G]$B:\w\n$G└──>$BR \\$ $NONE"
+
+else
+
+## Cores e efeitos do usuário comum
+
+PS1="$BR┌─[$BG\u$BR]$BY@$BR[$BW${HOSTNAME%%.*}$BR]$B:\w\n$BR└──>$BG \\$ $NONE"
+
+fi # Fim da condição if
+
+
+#
+# ---------- Diversos ----------
+#
+export MANPAGER="/usr/bin/most -s"
+
+#
+## Compilar com Checkinstall. ( requer: checkinstall )
+#
+alias cfg='./configure --prefix=/usr --sysconfdir=/etc && make'
+alias inst='sudo checkinstall -D --install=no --pkgarch=all --maintainer=email@agumserver.com'
+alias checkinstall-force='checkinstall --dpkgflags "--force-overwrite"'
+alias checkinstall-noinstall='checkinstall -y --fstrans=no --install=no'
+alias checkinstall='checkinstall -y --fstrans=no'
+
+#
+## Gestão Apt - Atualizar e Limpar Caches e Instalações
+#
+alias AptAtualiza='apt update ; apt upgrade -y ; apt dist-upgrade -y'
+alias AptLimpa='apt-get clean ; apt-get clean all ; apt-get autoclean ; apt-get autoremove'
+alias Instala='apt install'
+alias Remove='apt remove --purge'
+alias log-inicio="sed $'s/\^\[/\E/g;s/\[1G\[/\[27G\[/' /var/log/boot.log"
+alias p='pwd'
+
+
+# Criar Diretorios conctenados e ir pra o ultimo criado
+function mkdcd () { mkdir -p "$@" && eval cd "\"\$$#\""; }
+alias CriarDiretorio='mkdcd'
+
+# Atalhos para configurações - Limpar .bashrc - Limpar .profile
+alias limpabashrc='source /root/.bashrc'
+alias editabashrc='vim /root/.bashrc'
+alias limpaprofile='source /root/.profile'
+
+## Processos.
+#
+alias processos='ps -aux | grep ' ### USE: processo < programa >
+alias matar='kill -9 ' ### USE: matar < PID do programa >
+alias finalizar='killall ' ### USE: finalizar < programa >
+
+# 
+## Top 10 ( mostra os 10 comandos mais utilizados ).
+# 
+## copyright 2007 - 2010 Christopher Bratusek 
+#
+function comandos10() { 
+history | awk '{a[$2]++ } END{for(i in a){print a[i] " " i}}' | sort -rn | head
+} 
+
+#
+## Archive extractor.
+## usage: ex < file >
+#
+extract() {
+if [ -f $1 ] ; then
+case $1 in
+*.tar.bz2) tar xvjf $1 ;;
+*.tar.gz) tar xvzf $1 ;;
+*.tar.xz) tar xvJf $1 ;;
+*.bz2) bunzip2 $1 ;;
+*.rar) unrar x $1 ;;
+*.gz) gunzip $1 ;;
+*.tar) tar xvf $1 ;;
+*.tbz2) tar xvjf $1 ;;
+*.tgz) tar xvzf $1 ;;
+*.zip) unzip $1 ;;
+*.Z) uncompress $1 ;;
+*.7z) 7z x $1 ;;
+*.xz) unxz $1 ;;
+*.exe) cabextract $1 ;;
+*) echo "\`$1': unrecognized file compression" ;;
+esac
+else
+echo "\`$1' is not a valid file"
+fi
+}
+
+#
+## Compactar diretórios.
+#
+
+# .tar
+function mktar() { tar cvf "${1%%/}.tar" "${1%%/}/"; }
+
+# .tar.bz2
+function mktbz() { tar cvjf "${1%%/}.tar.bz2" "${1%%/}/"; }
+
+# .tar.gz
+function mktgz() { tar cvzf "${1%%/}.tar.gz" "${1%%/}/"; }
+
+# .tar.xz
+function mktxz() { tar cvJf "${1%%/}.tar.xz" "${1%%/}/"; }
+
+#
+## Zipar arquivos ou diretórios.
+#
+function zipf() { zip -r "$1".zip "$1" ; }
+
+#
+## Copiar ou Mover arquivos e seguir para o destino.
+#
+copVai() { cp "$@" && goto "$_"; }
+mvVai() { mv "$@" && goto "$_"; }
+goto() { [ -d "$1" ] && cd "$1" || cd "$(dirname "$1")"; }
+
+######### Manipular PDFs 
+#
+## Imprimir ManPages.
+#
+man_imprir() { man -t "$@" | lpr -pPrinter; }
+
+#
+## Criar PDFs de ManPages ( requer: ghostscript mimeinfo most).
+#
+man_pdf() { man -t "$@" | ps2pdf - /tmp/manpdf_$1.pdf && xdg-open /tmp/manpdf_$1.pdf ;}
+
+#
+## Reduzir Tamanho de Pdf - requer: ghostscript 
+#
+alias PDF-Reduz='gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.3 -dNOPAUSE -dBATCH -sOutputFile=Pdf_reduzido.pdf'
+
+#
+## Gestão PIP
+#
+alias pip3install='pip3 install'
+alias pipinstall='pip install'
+
+#
+## Limpar Lixeira
+#
+alias LimpaLixeira='rm -rf ~/.local/share/Trash/files/*'
+
+source /etc/profile.d/undistract-me.sh
+
+#GOPATH
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+
+source /roo/bash-powerline-shell/ps1_prompt
+
+# pip bash completion start
+_pip_completion()
+{
+   COMPREPLY=( $( COMP_WORDS="${COMP_WORDS[*]}" \
+                  COMP_CWORD=$COMP_CWORD \
+                  PIP_AUTO_COMPLETE=1 $1 ) )
+}
+complete -o default -F _pip_completion pip
+# pip bash completion end
+

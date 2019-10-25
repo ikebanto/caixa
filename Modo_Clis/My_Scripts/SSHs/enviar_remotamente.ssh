@@ -1,0 +1,14 @@
+#!/bin/bash
+
+echo "_________________________________________"
+cd ~/Público/Contas62/
+echo "Vc esta em `pwd`  "
+echo "______ O que existe aqui: _______________"
+ls
+echo "_________________________________________"
+echo "__ Copiando e enviando para o server_____"
+sshpass -p suasenhaaqui scp -r ALUGUEL CPFL SANASA NET MENSAL banto@batemacumba.net://home/banto/batemacumba.net/CaixaAberta/62
+echo "_________________________________________"
+echo "Código de retorno: $?"
+exit 0
+

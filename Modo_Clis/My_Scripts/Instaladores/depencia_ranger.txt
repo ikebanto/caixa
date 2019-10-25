@@ -1,0 +1,23 @@
+atool highlight libcaca img2txt lynx w3m  elinks mediainfo perl-image-exiftool poppler tTransmission w3m caca-utils pymentize bsdtar unrar pdftotext mutool transmission-show exiftool odt2txt chardet caca-utils pymentize bsdtar unrar pdftotext mutool transmission-show exiftool odt2txt chardet
+
+ranger --copy-config=all
+
+
+atool highlight lynx w3m  elinks mediainfo transmission w3m caca-utils bsdtar unrar exiftool odt2txt caca-utils bsdtar unrar exiftool odt2txt
+
+Ambiente Ruby com rvm
+
+instalar
+gnupg2
+
+git jekyll curl build-essential
+
+ruby ruby2.1-dev nodejs
+
+Intalar no pc sempre dependencias gerais e apontadas no bash
+
+mimeinfo>libfile-mimeinfo-perl
+
+
+ ghostscript libfile-mimeinfo-perl most
+ 
